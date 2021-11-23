@@ -10,7 +10,7 @@ import useFetch from "../../useHooks/useFetch";
 import LoaderComponent from "../../utils/LoaderComponent";
 
 export default function About() {
-  const { data, isLoading, serverError } = useFetch("GET", githubURL);
+  const { data, isLoading, serverError } = useFetch(githubURL);
 
   return (
     <div className="about__container">

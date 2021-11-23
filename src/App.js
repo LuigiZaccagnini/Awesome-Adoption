@@ -17,7 +17,7 @@ import Register from "./components/accounts/Register";
 import { supabase } from "./utils/SupaBaseUtils";
 import SLogin from "./components/accounts/SLogin";
 import { Provider } from "react-supabase";
-import { AuthProvider, useAuth } from "./context/SupaContext";
+import { AuthProvider } from "./context/SupaContext";
 import ForgotPassword from "./components/accounts/ForgotPassword";
 import PetAuthProvider, { usePetAuth } from "./context/TokenContext";
 import ResetPassword from "./components/accounts/settings/resetPassword";
@@ -39,8 +39,7 @@ export default function App() {
                     path="animal/:id"
                     element={
                       <PetLoading>
-                        {" "}
-                        <PetInfo />{" "}
+                        <PetInfo />
                       </PetLoading>
                     }
                   />
@@ -48,8 +47,7 @@ export default function App() {
                     path="pets/:type"
                     element={
                       <PetLoading>
-                        {" "}
-                        <PetType />{" "}
+                        <PetType />
                       </PetLoading>
                     }
                   />
@@ -65,26 +63,16 @@ export default function App() {
                     path="reset-password"
                     element={
                       <PrivateRoute>
-                        {" "}
-                        <ResetPassword />{" "}
+                        <ResetPassword />
                       </PrivateRoute>
                     }
                   />
-                  <Route
-                    path="profile"
-                    element={
-                      <SupaLoading>
-                        {" "}
-                        <Profile />{" "}
-                      </SupaLoading>
-                    }
-                  />
+                  <Route path="profile" element={<Profile />} />
                   <Route
                     path="/"
                     element={
                       <PetLoading>
-                        {" "}
-                        <Home />{" "}
+                        <Home />
                       </PetLoading>
                     }
                   />
@@ -101,19 +89,19 @@ export default function App() {
 }
 
 const PetLoading = ({ children }) => {
-  const { loading, errors } = usePetAuth();
+  const { loading, errors, tokenHeaders } = usePetAuth();
 
   return (
     <LoaderComponent isLoading={loading} serverError={errors}>
-      {children}
+      {tokenHeaders && children}
     </LoaderComponent>
   );
 };
-const SupaLoading = ({ children }) => {
-  const { isLoading, error } = useAuth();
-  return (
-    <LoaderComponent isLoading={isLoading} serverError={error}>
-      {children}
-    </LoaderComponent>
-  );
-};
+// const SupaLoading = ({ children }) => {
+//   const { isLoading, error } = useAuth();
+//   return (
+//     <LoaderComponent isLoading={isLoading} serverError={error}>
+//       {children}
+//     </LoaderComponent>
+//   );
+// };

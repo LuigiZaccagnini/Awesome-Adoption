@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Col } from "react-bootstrap";
+import { Button, Card, Col, Placeholder } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./PetCard.css";
 import placeholder from "../pets/placeholder.jpg";
@@ -68,3 +68,29 @@ export default function PetCard(props) {
     </Col>
   );
 }
+
+export const PetCardLoading = () => (
+  <>
+    {[0, 1, 2].map((p) => (
+      <Col md={4} key={p} xs={12} className="card-container">
+        <Card className="card">
+          <Card.Header className="card__header">
+            <Placeholder xs={4} />
+            {/* <Button className="card__btn">More Info</Button> */}
+            <Placeholder.Button variant="primary" xs={4} />
+          </Card.Header>
+          <Placeholder className="card__img" animation="glow">
+            <Placeholder bg="primary" xs={12} style={{ height: "100%" }} />
+          </Placeholder>
+          {/* <Card.Img className="card__img" /> */}
+
+          <Card.Body className="card__body">
+            <Placeholder as={Card.Title} animation="glow">
+              <Placeholder xs={6} />
+            </Placeholder>
+          </Card.Body>
+        </Card>
+      </Col>
+    ))}
+  </>
+);

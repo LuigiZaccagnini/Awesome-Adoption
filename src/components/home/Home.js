@@ -1,41 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Image, Row, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Dog from "./dog.jpg";
 import "./home.css";
-import LoadingSpinner from "../shared/Spinner";
-import PetCard from "../layout/PetCard";
+import PetCard, {
+  // PetCard,
+  PetCardLoading,
+} from "../layout/PetCard";
 import { usePetAuth } from "../../context/TokenContext";
+import useFetch from "../../useHooks/useFetch";
+import LoaderComponent from "../../utils/LoaderComponent";
 
 export default function Home() {
-  const [petList, setpetList] = useState("");
   const { tokenHeaders } = usePetAuth();
 
-  const renderCards = () => {
-    return petList ? (
-      petList.map((pet, index) => <PetCard key={index} pet={pet} />)
-    ) : (
-      <LoadingSpinner />
-    );
-  };
-
-  useEffect(() => {
-    const fetchRandomPets = () => {
-      fetch(
-        `https://api.petfinder.com/v2/animals?limit=3&sort=random
-        `,
-        tokenHeaders
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setpetList(data.animals);
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    };
-    fetchRandomPets();
-  }, []);
+  const randomThreePets =
+    "https://api.petfinder.com/v2/animals?limit=3&sort=random";
+  const { data, isLoading, serverError } = useFetch(
+    randomThreePets,
+    tokenHeaders
+  );
 
   return (
     <div className="home__container">
@@ -47,7 +31,16 @@ export default function Home() {
       <div className="featured__pets">
         <h2>Featured Pets</h2>
         <Container>
-          <Row>{renderCards()}</Row>
+          <Row>
+            <LoaderComponent
+              isLoading={isLoading}
+              serverError={serverError}
+              spinner={<PetCardLoading />}
+            >
+              {data &&
+                data.animals.map((pet) => <PetCard key={pet.id} pet={pet} />)}
+            </LoaderComponent>
+          </Row>
         </Container>
       </div>
     </div>

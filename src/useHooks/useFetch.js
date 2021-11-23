@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useFetch = (method = "GET", url, body = null, dep = [], headers = {}) => {
+const useFetch = (url, config = { method: "GET" }, dep = []) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState(false);
@@ -9,7 +9,6 @@ const useFetch = (method = "GET", url, body = null, dep = [], headers = {}) => {
     const fetchFunction = async () => {
       setIsLoading(true);
       setServerError(false);
-      const config = { method: method, body: body, headers: headers };
 
       try {
         const response = await fetch(url, config);
@@ -19,8 +18,8 @@ const useFetch = (method = "GET", url, body = null, dep = [], headers = {}) => {
 
         setData(json);
       } catch (error) {
-        setData(null);
         setServerError(true);
+        setData(null);
       } finally {
         setIsLoading(false);
       }

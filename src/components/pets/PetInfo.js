@@ -24,12 +24,14 @@ export default function PetInfo() {
 
   const { tokenHeaders } = usePetAuth();
 
+  const defaultConfig = {
+    method: "GET",
+    ...tokenHeaders,
+  };
   const { data, isLoading, serverError } = useFetch(
-    "GET",
     `${lookUpPet}${id}`,
-    null,
     [id],
-    tokenHeaders && tokenHeaders.headers
+    defaultConfig
   );
   const pet = data == null ? {} : data.animal;
 
